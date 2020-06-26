@@ -3,5 +3,8 @@
 }
 
 .Palette-colors {
-    height : 80%;
+    height : 90%;
+    font-size: 0;
+    /* display: grid; */
 }
+
