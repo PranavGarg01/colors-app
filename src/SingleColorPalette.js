@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ColorBox from "./ColorBox";
-import './SingleColorPalette.css';
+import "./SingleColorPalette.css";
+import Navbar from "./Navbar";
 class SingleColorPalette extends Component {
 	constructor(props) {
 		super(props);
@@ -8,8 +9,13 @@ class SingleColorPalette extends Component {
 		this.state = {
 			format: "hex",
 		};
+		this.handleChange = this.handleChange.bind(this);
 	}
-
+	handleChange(format) {
+		this.setState({
+			format,
+		});
+	}
 	gatherShades(palette, colorId) {
 		let shades = [];
 		let allColors = palette.colors;
@@ -22,21 +28,23 @@ class SingleColorPalette extends Component {
 		return shades.slice(1);
 	}
 	render() {
-		const colorShades = this.gatherShades(
-			this.props.palette,
-			this.props.colorId
-		);
+		const { format } = this.state;
+		const { palette, colorId } = this.props;
+		const colorShades = this.gatherShades(palette, colorId);
 		const colorBoxes = colorShades.map((p) => (
-			<ColorBox name={p.name} id={p.id} color={p.hex} />
+			<ColorBox name={p.name} id={p.id} color={p[format]} />
 		));
 		console.log(colorShades);
 		return (
-            <div className="SingleColorPalette">
-                <div className="SingleColorPalette-colors">
-                    {colorBoxes}
-                </div>
-            </div>
-        );
+			<div className="SingleColorPalette">
+				<Navbar handleChange={this.handleChange} />
+				<div className="SingleColorPalette-colors">{colorBoxes}</div>
+				<footer className="Palette-footer">
+					{palette.paletteName}
+					<span className="emoji">{palette.emoji}</span>
+				</footer>
+			</div>
+		);
 	}
 }
 

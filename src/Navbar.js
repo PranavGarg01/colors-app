@@ -39,12 +39,14 @@ class Navbar extends Component {
                 <div className="logo">
                     <Link to="/">Color App</Link>
                 </div>
+                {(level && changeLevel) && 
                 <div className="slider-container">
                     <span>Level: {level}</span>
                     <div className="slider">
                         <Slider defaultValue={level} step={100} max={900} min={100} onAfterChange={changeLevel}/>
                     </div>
                 </div>
+                }
                 <div className="select-container">
                     <Select value={format} onChange={this.handleFormatChange}>
                         <MenuItem value="hex">HEX - #ffffff</MenuItem>
