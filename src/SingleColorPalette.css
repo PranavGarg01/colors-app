@@ -1,0 +1,9 @@
+.SingleColorPalette {
+    height : 100vh;
+    overflow: hidden; /*might need to delete this late */
+}
+
+.SingleColorPalette-colors {
+    height : 95%;
+    font-size: 0;
+}
