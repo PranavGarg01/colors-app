@@ -24,6 +24,7 @@ class App extends Component{
 						)
 					} 
 				/>
+				<Route exact path='/palette/:paletteid/:colorid' render={()=> (<h1>Single Color Page</h1>)} />
 			</Switch>
 
 
