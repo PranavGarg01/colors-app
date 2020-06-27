@@ -5,6 +5,7 @@
     display: inline-block; 
     position: relative;
     cursor: pointer;
+    vertical-align: top;
 }
 
 .copy-button {

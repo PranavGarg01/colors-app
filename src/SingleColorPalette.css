@@ -22,3 +22,15 @@
     margin: 0 1rem;
     padding-bottom: .5rem;
 }
+
+.SingleColorPalette .ColorBox {
+    height : 50%;
+}
+
+.ColorBox.Back {
+    background-color: black;
+}
+
+.Back .copy-button {
+    opacity: 1;
+}
