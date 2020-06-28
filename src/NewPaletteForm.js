@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import { ChromePicker } from "react-color";
 import {
 	Button,
 	Drawer,
@@ -10,10 +9,10 @@ import {
 	Divider,
 	Typography
 } from "@material-ui/core";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import DraggableColorList from "./DraggableColorList";
 import { arrayMove } from "react-sortable-hoc";
 import PaletteFormNav from "./PaletteFormNav";
+import ColorPickerForm from "./ColorPickerForm";
 const drawerWidth = 340;
 
 const styles = (theme) => ({
@@ -82,50 +81,26 @@ class NewPaletteForm extends Component {
 		super(props);
 		this.state = {
 			open: false,
-			currentColor: "teal",
-			newColorName: "",
 			colors: this.props.palettes[0].colors,
 		};
-		this.updateColor = this.updateColor.bind(this);
+
 		this.addNewColor = this.addNewColor.bind(this);
-		this.handleNewName = this.handleNewName.bind(this);
 		this.handleSave = this.handleSave.bind(this);
 		this.removeColor = this.removeColor.bind(this);
 		this.onSortEnd = this.onSortEnd.bind(this);
 		this.clearPalette = this.clearPalette.bind(this);
 		this.randomColor = this.randomColor.bind(this);
 	}
-	componentDidMount() {
-		ValidatorForm.addValidationRule("isColorNameUnique", (value) =>
-			this.state.colors.every(
-				({ name }) => name.toLowerCase() !== value.toLowerCase()
-			)
-		);
-		ValidatorForm.addValidationRule("isColorUnique", (value) =>
-			this.state.colors.every(
-				({ color }) => color !== this.state.currentColor
-			)
-		);
-		
-	}
+	
 	onSortEnd = ({ oldIndex, newIndex }) => {
 		this.setState(({ colors }) => ({
 			colors: arrayMove(colors, oldIndex, newIndex),
 		}));
 	};
-	updateColor(newColor) {
-		this.setState({
-			currentColor: newColor.hex,
-		});
-	}
-	addNewColor() {
-		const newColor = {
-			color: this.state.currentColor,
-			name: this.state.newColorName,
-		};
+	
+	addNewColor(newColor) {
 		this.setState({
 			colors: [...this.state.colors, newColor],
-			newName: "",
 		});
 	}
 	removeColor(colorName) {
@@ -153,11 +128,7 @@ class NewPaletteForm extends Component {
 	handleDrawerClose = () => {
 		this.setState({ open: false });
 	};
-	handleNewName(e) {
-		this.setState({
-			[e.target.name]: e.target.value,
-		});
-	}
+	
 	handleSave(newName) {
 		const Palette = {
 			paletteName: newName,
@@ -169,11 +140,11 @@ class NewPaletteForm extends Component {
 	}
 	render() {
 		const { classes, maxColors,palettes } = this.props;
-		const { open, colors, currentColor, newColorName } = this.state;
+		const { open, colors } = this.state;
 		const isPaletteFull = colors.length >= maxColors;
 		return (
 			<div className={classes.root}>
-				<PaletteFormNav 
+				<PaletteFormNav
 					open={open}
 					classes={classes}
 					palettes={palettes}
@@ -213,40 +184,11 @@ class NewPaletteForm extends Component {
 							Random Color
 						</Button>
 					</div>
-					<ChromePicker
-						color={currentColor}
-						onChangeComplete={this.updateColor}
+					<ColorPickerForm 
+						isPaletteFull={isPaletteFull}
+						addNewColor={this.addNewColor} 
+						colors={colors}
 					/>
-					<ValidatorForm onSubmit={this.addNewColor}>
-						<TextValidator
-							onChange={this.handleNewName}
-							value={newColorName}
-							name="newColorName"
-							validators={[
-								"required",
-								"isColorNameUnique",
-								"isColorUnique",
-							]}
-							errorMessages={[
-								"this field is required",
-								"Color Name already used",
-								"Color already in the Palette",
-							]}
-						/>
-						<Button
-							variant="contained"
-							color="primary"
-							type="submit"
-							disabled={isPaletteFull}
-							style={{
-								backgroundColor: isPaletteFull
-									? "grey"
-									: currentColor,
-							}}
-						>
-							{isPaletteFull ? "Palette Full" : "Add Color"}
-						</Button>
-					</ValidatorForm>
 				</Drawer>
 				<main
 					className={classNames(classes.content, {
