@@ -7,16 +7,28 @@ import PaletteList from './PaletteList';
 import {generatePalette} from './colorHelpers';
 import NewPaletteForm from './NewPaletteForm';
 class App extends Component{
+	constructor(props) {
+		super(props)
+	
+		this.state = {
+			palette : seedColors
+		}
+		this.savePalette = this.savePalette.bind(this)
+	}
+	
 	findPalette(id) {
-		return seedColors.find(function(palette) {
+		return this.state.palette.find(function(palette) {
 			return palette.id === id;
 		})
+	}
+	savePalette(p) {
+		this.setState({palette : [...this.state.palette,p]})
 	}
 	render() {
 		return (
 			<Switch>
-				<Route exact path='/palette/new' render={()=> <NewPaletteForm />} />
-				<Route exact path='/' render={(routeProps)=> <PaletteList palette={seedColors} {...routeProps}/>} />
+				<Route exact path='/palette/new' render={(routeProps)=> <NewPaletteForm savePalette={this.savePalette} {...routeProps}/>} />
+				<Route exact path='/' render={(routeProps)=> <PaletteList palette={this.state.palette} {...routeProps}/>} />
 				<Route exact path='/palette/:id' 
 					render={
 						routeProps=>   (
