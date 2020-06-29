@@ -15,6 +15,7 @@ class App extends Component{
 			palette : savedPalettes || seedColors
 		}
 		this.savePalette = this.savePalette.bind(this);
+		this.deletePalette = this.deletePalette.bind(this);
 	}
 	
 	findPalette(id) {
@@ -35,11 +36,19 @@ class App extends Component{
 			JSON.stringify(this.state.palette)
 		);
 	}
+	deletePalette(id) {
+		this.setState(
+			st => ({
+				palette : st.palette.filter(p => p.id !== id)
+			}),
+			this.saveLocal
+		)
+	}
 	render() {
 		return (
 			<Switch>
 				<Route exact path='/palette/new' render={(routeProps)=> <NewPaletteForm savePalette={this.savePalette} palettes={this.state.palette}{...routeProps}/>} />
-				<Route exact path='/' render={(routeProps)=> <PaletteList palette={this.state.palette} {...routeProps}/>} />
+				<Route exact path='/' render={(routeProps)=> <PaletteList palette={this.state.palette} deletePalette={this.deletePalette}{...routeProps}/>} />
 				<Route exact path='/palette/:id' 
 					render={
 						routeProps=>   (
