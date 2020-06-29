@@ -24,12 +24,14 @@ class PaletteList extends Component {
 					</nav>
 					<TransitionGroup className={classes.palettes}>
 						{palette.map((palette) => (
-							<CSSTransition key={palette.id} classNames='fade' timeout={500}>
+							<CSSTransition
+								key={palette.id}
+								classNames="fade"
+								timeout={500}
+							>
 								<MiniPalette
 									{...palette}
-									handleClick={() =>
-										this.goToPalette(palette.id)
-									}
+									handleClick={this.goToPalette}
 									deletePalette={deletePalette}
 								/>
 							</CSSTransition>
