@@ -9,11 +9,12 @@ import NewPaletteForm from './NewPaletteForm';
 class App extends Component{
 	constructor(props) {
 		super(props)
-	
+		const savedPalettes = JSON.parse(window.localStorage.getItem("palettes"));
+
 		this.state = {
-			palette : seedColors
+			palette : savedPalettes || seedColors
 		}
-		this.savePalette = this.savePalette.bind(this)
+		this.savePalette = this.savePalette.bind(this);
 	}
 	
 	findPalette(id) {
@@ -22,7 +23,17 @@ class App extends Component{
 		})
 	}
 	savePalette(p) {
-		this.setState({palette : [...this.state.palette,p]})
+		this.setState(
+			{palette : [...this.state.palette,p]},
+			this.saveLocal
+
+		);
+	}
+	saveLocal() {
+		window.localStorage.setItem(
+			"palettes",
+			JSON.stringify(this.state.palette)
+		);
 	}
 	render() {
 		return (
