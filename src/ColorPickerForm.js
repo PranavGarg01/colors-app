@@ -14,7 +14,7 @@ const styles = {
 		width: "100%",
 		padding: "1rem",
 		marginTop: "1rem",
-		fontSize: "2rem",
+		fontSize: "1.2rem",
 	},
 	colorNameInput: {
 		width: "100%",
