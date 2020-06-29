@@ -41,7 +41,10 @@ export default {
         left: "0px",
         bottom: "0px",
         padding: "10px",
-        color: "black",
+        color: props =>
+        chroma(props.color).luminance() <= 0.08
+          ? "rgba(255,255,255,0.8)"
+          : "rgba(0,0,0,0.6)",
         letterSpacing: "1px",
         textTransform: "uppercase",
         fontSize: "12px"
