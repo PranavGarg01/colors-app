@@ -22,7 +22,8 @@ const styles = (theme) => ({
 			duration: theme.transitions.duration.leavingScreen,
 		}),
 		flexDirection: "row",
-        justifyContent: "space-between",
+		justifyContent: "space-between",
+		alignItems: "center",
         height : "64px"
 	},
 	appBarShift: {
@@ -39,15 +40,25 @@ const styles = (theme) => ({
 	hide: {
 		display: "none",
 	},
-	navBtns: {},
+	navBtns: {
+		marginRight: "1rem",
+		"& a": {
+		  textDecoration: "none"
+		}
+	  },
+	  button: {
+		margin: "0 0.5rem"
+	  }
 });
 
 class PaletteFormNav extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = { newPaletteName: "" };
+		this.state = { newPaletteName: "", open: false };
 		this.handleNewName = this.handleNewName.bind(this);
+		this.handleClickOpen = this.handleClickOpen.bind(this);
+		this.handleClose = this.handleClose.bind(this);
 	}
 	
 	handleNewName(evt) {
@@ -55,6 +66,12 @@ class PaletteFormNav extends Component {
 			[evt.target.name]: evt.target.value,
 		});
 	}
+	handleClickOpen = () => {
+		this.setState({ open: true });
+	};
+	handleClose = () => {
+		this.setState({ open: false });
+    };
 	render() {
 		const { classes, open } = this.props;
 		return (
@@ -82,17 +99,29 @@ class PaletteFormNav extends Component {
 						<Typography variant="h6" color="inherit" noWrap>
 							Create New Palette
 						</Typography>
-                        </Toolbar>
-						<div className={classes.navBtns}>
-							
-							<PaletteMetaForm handleSave={this.props.handleSave} palettes={this.props.palettes}/>
-							<Link to="/">
-								<Button variant="contained" color="secondary">
-									Go Back
-								</Button>
-							</Link>
-						</div>
-					
+					</Toolbar>
+					<div className={classes.navBtns}>
+						<PaletteMetaForm
+							handleSave={this.props.handleSave}
+							palettes={this.props.palettes}
+							open={this.state.open}
+							handleClickOpen={this.handleClickOpen}
+							handleClose={this.handleClose}
+						/>
+						<Link to="/" style={{textDecoration:"none"}}>
+							<Button variant="contained" color="secondary" className={classes.button}>
+								Go Back
+							</Button>
+						</Link>
+						<Button
+							variant="contained"
+							className={classes.button}
+							color="primary"
+							onClick={this.handleClickOpen}
+						>
+							Save
+						</Button>
+					</div>
 				</AppBar>
 			</div>
 		);

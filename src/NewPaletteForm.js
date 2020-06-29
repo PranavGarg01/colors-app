@@ -66,9 +66,9 @@ const styles = (theme) => ({
 	buttons: {
 		width: "100%",
 	},
-	button: {
-		width: "50%",
-	},
+	// button: {
+	// 	// width: "50%",
+	// },
 });
 
 class NewPaletteForm extends Component {
